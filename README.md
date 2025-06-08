@@ -1,2 +1,2 @@
-# ruby-news-scraper
+# rugby-news-scraper
 Collates the Latest Rugby News 
