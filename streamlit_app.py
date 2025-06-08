@@ -13,11 +13,12 @@ try:
 
     for entry in feed.entries[:10]:
         title = entry.title
-        summary = entry.summary if "summary" in entry else "No summary available."
+        raw_summary = entry.summary if "summary" in entry else "No summary available."
+        clean_summary = BeautifulSoup(raw_summary, "html.parser").get_text()
         link = entry.link
 
         st.subheader(title)
-        st.write(summary)
+        st.write(clean_summary)
         st.markdown(f"[Read More]({link})")
         st.markdown("---")
 
