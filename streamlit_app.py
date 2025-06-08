@@ -5,7 +5,8 @@ st.set_page_config(page_title="Global Rugby News", layout="wide")
 st.title("🏉 Rugby Headlines Around the World")
 
 # Planet Rugby RSS feed
-FEED_URL = "https://www.planetrugby.com/feed"
+FEED_URL = "https://www.world.rugby/news/rss"
+
 
 try:
     feed = feedparser.parse(FEED_URL)
