@@ -14,7 +14,11 @@ try:
     for entry in feed.entries[:10]:
         title = entry.title
         raw_summary = entry.summary if "summary" in entry else "No summary available."
-        clean_summary = BeautifulSoup(raw_summary, "html.parser").get_text()
+
+        soup = BeautifulSoup(raw_summary, "html.parser")
+        first_p = soup.find("p")
+        clean_summary = first_p.get_text() if first_p else soup.get_text()
+        
         link = entry.link
 
         st.subheader(title)
