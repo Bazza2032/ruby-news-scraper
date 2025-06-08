@@ -20,20 +20,25 @@ try:
     if not articles:
         st.warning("No rugby articles found — the site structure may have changed.")
 
-    for article in articles[:10]:
-        title_tag = article.find("h4", class_="article-title")
-        summary_tag = article.find("p", class_="excerpt")
-        link_tag = article.find("a", href=True)
+    # Updated article logic for RugbyPass
+articles = soup.find_all("li", class_="ListingListing__StyledListing-sc-1f1it3l-0")
 
-        if title_tag and link_tag:
-            title = title_tag.get_text(strip=True)
-            summary = summary_tag.get_text(strip=True) if summary_tag else "No summary available."
-            link = link_tag["href"]
+if not articles:
+    st.warning("No rugby articles found — site layout may have changed again.")
 
-            st.subheader(title)
-            st.write(summary)
-            st.markdown(f"[Read More]({link})")
-            st.markdown("---")
+for article in articles[:10]:
+    title_tag = article.find("a")
+    summary_tag = article.find("p")
+    
+    if title_tag:
+        title = title_tag.get_text(strip=True)
+        link = title_tag["href"]
+        summary = summary_tag.get_text(strip=True) if summary_tag else "No summary available."
+
+        st.subheader(title)
+        st.write(summary)
+        st.markdown(f"[Read More](https://www.rugbypass.com{link})")
+        st.markdown("---")
 
 except Exception as e:
     st.error("❌ Failed to fetch or parse rugby articles.")
