@@ -15,30 +15,25 @@ try:
     response.raise_for_status()
     soup = BeautifulSoup(response.content, "html.parser")
 
-    articles = soup.find_all("div", class_="article-block")
+    # ✅ Updated article structure
+    articles = soup.find_all("li", class_="ListingListing__StyledListing-sc-1f1it3l-0")
 
     if not articles:
-        st.warning("No rugby articles found — the site structure may have changed.")
+        st.warning("No rugby articles found — site layout may have changed.")
 
-    # Updated article logic for RugbyPass
-articles = soup.find_all("li", class_="ListingListing__StyledListing-sc-1f1it3l-0")
+    for article in articles[:10]:
+        title_tag = article.find("a")
+        summary_tag = article.find("p")
 
-if not articles:
-    st.warning("No rugby articles found — site layout may have changed again.")
+        if title_tag:
+            title = title_tag.get_text(strip=True)
+            link = title_tag["href"]
+            summary = summary_tag.get_text(strip=True) if summary_tag else "No summary available."
 
-for article in articles[:10]:
-    title_tag = article.find("a")
-    summary_tag = article.find("p")
-    
-    if title_tag:
-        title = title_tag.get_text(strip=True)
-        link = title_tag["href"]
-        summary = summary_tag.get_text(strip=True) if summary_tag else "No summary available."
-
-        st.subheader(title)
-        st.write(summary)
-        st.markdown(f"[Read More](https://www.rugbypass.com{link})")
-        st.markdown("---")
+            st.subheader(title)
+            st.write(summary)
+            st.markdown(f"[Read More](https://www.rugbypass.com{link})")
+            st.markdown("---")
 
 except Exception as e:
     st.error("❌ Failed to fetch or parse rugby articles.")
