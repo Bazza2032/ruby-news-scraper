@@ -1,5 +1,6 @@
 import streamlit as st
 import feedparser
+from bs4 import BeautifulSoup 
 
 st.set_page_config(page_title="Rugby News Headlines", layout="wide")
 st.title("🏉 Rugby Headlines Around the World")
